@@ -96,6 +96,12 @@ class DMCWrapper(core.Env):
         self.seed(seed=task_kwargs.get('random', 1))
 
     def __getattr__(self, name):
+        if name == "__setstate__":
+            raise AttributeError(name)
+        try:
+            getattr(self._env, name)
+        except:
+            import pdb; pdb.set_trace()
         return getattr(self._env, name)
 
     def _get_obs(self, time_step):
